@@ -4,14 +4,16 @@ import { useQuery } from '@apollo/client';
 import ProductItem from '../ProductItem';
 import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
-import { useStoreContext } from '../../utils/GlobalState';
+//import { useStoreContext } from '../../utils/GlobalState';
 import { UPDATE_PRODUCTS } from '../../utils/actions';
 import { idbPromise } from '../../utils/helpers';
+import { connect } from 'react-redux'
 
 function ProductList() {
-  const [state, dispatch] = useStoreContext();
+  //const [state, dispatch] = useStoreContext();
 
-  const { currentCategory } = state;
+  const { currentCategory } = currentCategory;
+  const { products } = products;
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
@@ -39,16 +41,16 @@ function ProductList() {
 
   function filterProducts() {
     if (!currentCategory) {
-      return state.products;
+      return products;
     }
 
-    return state.products.filter(product => product.category._id === currentCategory);
+    return products.filter(product => product.category._id === currentCategory);
   }
 
   return (
     <div className="my-2">
       <h2>Our Products:</h2>
-      {state.products.length ? (
+      {products.length ? (
         <div className="flex-row">
           {filterProducts().map((product) => (
             <ProductItem
@@ -69,4 +71,12 @@ function ProductList() {
   );
 }
 
-export default ProductList;
+const mapStateToProps = state => ({
+  products: state.products,
+  categories: state.categories,
+  currentCategory: state.currentCategory,
+  cart: state.cart,
+  cartOpen: state.cartOpen
+})
+
+export default connect(mapStateToProps)(ProductList);

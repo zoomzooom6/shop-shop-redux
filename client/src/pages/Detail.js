@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 
 import { QUERY_PRODUCTS } from '../utils/queries';
 import spinner from '../assets/spinner.gif';
-import { useStoreContext } from '../utils/GlobalState';
+//import { useStoreContext } from '../utils/GlobalState';
 import {
   REMOVE_FROM_CART,
   UPDATE_CART_QUANTITY,
@@ -13,16 +13,18 @@ import {
 } from '../utils/actions';
 import { idbPromise } from '../utils/helpers';
 import Cart from '../components/Cart';
+import { connect } from 'react-redux';
 
 function Detail() {
-  const [state, dispatch] = useStoreContext();
+  //const [state, dispatch] = useStoreContext();
   const { id } = useParams();
 
   const [currentProduct, setCurrentProduct] = useState({})
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
-  const { products, cart } = state;
+  const { products } = products;
+  const { cart } = cart;
 
   useEffect(() => {
     if (products.length) {
@@ -114,5 +116,10 @@ function Detail() {
     </>
   );
 }
+const mapStateToProps = state => ({
+  products: state.products,
+  cart: state.cart
+})
 
-export default Detail;
+
+export default connect(mapStateToProps)(Detail);

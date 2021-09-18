@@ -9,7 +9,6 @@ import {
     CLEAR_CART,
     TOGGLE_CART
 } from './actions';
-import { useReducer } from 'react';
 
 export const reducer = (state, action) => {
     switch (action.type) {
@@ -77,7 +76,3 @@ export const reducer = (state, action) => {
             return state;
     }
 };
-
-export function useProductReducer(initialState) {
-    return useReducer(reducer, initialState);
-}
