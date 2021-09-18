@@ -4,10 +4,18 @@ Week 22 Challenge - Refactor exisiting React web application to utilize Redux ra
 <a href='https://shop-shop-redux-tony.herokuapp.com/' target="_blank">Live deployment</a>
 
 ## Table of Contents
+* [Criteria](#criteria)
 * [Installation and Usage](#installation-and-usage)
 * [Features](#features)
 * [Contributions](#contributions)
 * [Final Results](#final-results)
+
+## Criteria
+* Redux manages global state rather than Context API
+* React front end uses a Redux provider to access store
+* Changes to global state are passed by app to a reducer to a Redux store
+* App extracts state data from Redux store
+* App dispacthes actions using Redux instead of Context
 
 ## Installation and Usage
 Please visit the deployment link above to view the application.
