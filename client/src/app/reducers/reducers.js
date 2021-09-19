@@ -37,7 +37,7 @@ const reducers = (state = initialState, action) => {
             console.log(action);
             return {
                 ...state,
-                currentCategory: action.currentCategory
+                currentCategory: action.category
             };
         case ADD_TO_CART:
             console.log(action);
@@ -58,7 +58,6 @@ const reducers = (state = initialState, action) => {
                 console.log(product);
                 return product._id !== action.item;
             });
-            console.log(newState);
             return {
                 ...state,
                 cartOpen: newState.length > 0,

@@ -34,8 +34,8 @@ export const removeCart = (item) => {
     return {type: REMOVE_FROM_CART, item}
 }
 
-export const updateCartQuantity = () => {
-    return {type: UPDATE_CART_QUANTITY}
+export const updateCartQuantity = (cart, purchaseQuantity) => {
+    return {type: UPDATE_CART_QUANTITY, cart, purchaseQuantity}
 }
 
 export const clearCart = () => {
