@@ -15,12 +15,10 @@ const CartItem = ({ item }) => {
         const value = e.target.value;
 
         if (value === '0') {
-            this.props.rmvFromCart(item._id);
-
+            dispatch(removeCart(item._id));
             idbPromise('cart', 'delete', { ...item });
         } else {
             dispatch(updateCartQuantity(item._id, value));
-
             idbPromise('cart', 'put', { ...item, purchaseQuantity: parseInt(value) });
         }
     };

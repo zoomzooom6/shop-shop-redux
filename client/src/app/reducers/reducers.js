@@ -28,6 +28,7 @@ const reducers = (state = initialState, action) => {
             };
         // if action type value is the value of `UPDATE_CATEGORIES`, return a new state object with an updated categories array
         case UPDATE_CATEGORIES:
+            console.log(action);
             return {
                 ...state,
                 categories: [...action.categories || []]
@@ -52,16 +53,19 @@ const reducers = (state = initialState, action) => {
                 cart: [...state.cart, ...action.items || []],
             };
         case REMOVE_FROM_CART:
+            console.log(action);
             let newState = state.cart.filter(product => {
-                return product._id !== action._id;
+                console.log(product);
+                return product._id !== action.item;
             });
-
+            console.log(newState);
             return {
                 ...state,
                 cartOpen: newState.length > 0,
                 cart: newState
             };
         case UPDATE_CART_QUANTITY:
+            console.log(action);
             return {
                 ...state,
                 cartOpen: true,
