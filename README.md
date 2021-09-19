@@ -19,6 +19,14 @@ Week 22 Challenge - Refactor exisiting React web application to utilize Redux ra
 
 ## Installation and Usage
 Please visit the deployment link above to view the application.
+* Free to browse shop
+* Will need to login or create account to "purchase" items
+* On checkout, linked to basic Stripe account
+    * Enter all requested information, does not need to be real information
+    * Enter 4242 4242 4242 4242 for the card number
+    * Submit payment to proceed
+* Redirected back to home page after payment
+* Past orders available to be viewed in site
 
 ## Features
 This web application allows users to add items within a shop to a cart and checkout/make a payment using Stripe.
@@ -35,8 +43,8 @@ This application uses the following technologies:
 Refactoring done by Tony Huang. Follow me on <a href="">GitHub</a>.
 
 ## Final Results
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
-<img src='' alt='' />
+<img src='./assets/images/MainPage_ReduxProvider.jpg' alt='Main landing page showing component breakdown' />
+Main landing page, with Redux as main provider
+
+<img src='./assets/images/ActionsAndReducers.jps' alt='Showing actions being called by on screen actions' />
+Actions and reducers being called
