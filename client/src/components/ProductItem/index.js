@@ -19,14 +19,8 @@ function ProductItem(item) {
 
   const addToCart = () => {
     const itemInCart = cart.find((cartItem) => cartItem._id === _id)
-    console.log('in addToCart fcn cart: ', cart)
     if (itemInCart) {
-      console.log('itemincart: ', itemInCart)
-      dispatch(updateCartQuantity(_id, itemInCart.purchaseQuantity));
-      idbPromise('cart', 'put', {
-        ...itemInCart,
-        purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
-      });
+      dispatch(updateCartQuantity(_id, itemInCart.purchaseQuantity + 1));
     } else {
       dispatch(addCart(item));
       idbPromise('cart', 'put', { ...item, purchaseQuantity: 1 });
