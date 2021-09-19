@@ -15,13 +15,18 @@ const ProductList = () => {
   //const [state, dispatch] = useStoreContext();
   const dispatch = useDispatch();
   const { currentCategory, products } = useSelector((state) => state);
-  console.log(currentCategory);
+  //console.log(currentCategory);
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
+  console.log(data);
 
   useEffect(() => {
     if (data) {
+      console.log('in useEffect hook');
+      console.log(data.products)
       dispatch(updateProducts(data.products));
+      console.log('after dispatch');
+      //console.log(state.getState())
 
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
@@ -37,10 +42,10 @@ const ProductList = () => {
 
   function filterProducts() {
     if (!currentCategory) {
-      return products;
+      return data.products;
     }
 
-    return products.filter(product => product.category._id === currentCategory);
+    return data.products.filter(product => product.category._id === currentCategory);
   }
 
   return (

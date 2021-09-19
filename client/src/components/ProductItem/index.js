@@ -19,7 +19,7 @@ function ProductItem(item) {
 
   //const [state, dispatch] = useStoreContext();
   const dispatch = useDispatch();
-  const { cart } = useSelector(this.props);
+  const { cart } = useSelector((state) => state);
 
   const addToCart = () => {
     const itemInCart = cart.find((cartItem) => cartItem._id === _id)

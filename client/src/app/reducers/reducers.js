@@ -21,6 +21,8 @@ const initialState = {
 const reducers = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_PRODUCTS:
+            console.log('in update products reducer');
+            console.log(action);
             return {
                 ...state,
                 products: [...action.products || []]

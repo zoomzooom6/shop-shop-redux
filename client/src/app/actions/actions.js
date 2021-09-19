@@ -10,15 +10,15 @@ import {
     TOGGLE_CART
 } from "./types";
 
-export const updateProducts = () => {
-    return {type: UPDATE_PRODUCTS}
+export const updateProducts = (products) => {
+    return {type: UPDATE_PRODUCTS, products}
 }
 
 export const updateCategories = () => {
     return {type: UPDATE_CATEGORIES}
 }
 
-export const updateCurrentCategory = (y) => {
+export const updateCurrentCategory = () => {
     return {type: UPDATE_CURRENT_CATEGORY}
 }
 
