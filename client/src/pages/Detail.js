@@ -8,10 +8,8 @@ import { addCart, removeCart, updateCartQuantity, updateProducts } from '../app/
 import { idbPromise } from '../utils/helpers';
 import Cart from '../components/Cart';
 import { useSelector, useDispatch } from 'react-redux';
-//import { connect } from 'react-redux';
 
 const Detail = () => {
-  //const [state, dispatch] = useStoreContext();
 
   const { id } = useParams();
 
@@ -19,10 +17,7 @@ const Detail = () => {
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   const dispatch = useDispatch();
-  const { products } = useSelector(state => state.products);
-  const { cart } = useSelector(state => state.cart);
-
-  //const { products, cart } = this.props;
+  const { products, cart } = useSelector((state) => state);
 
   useEffect(() => {
     if (products.length) {
@@ -101,28 +96,3 @@ const Detail = () => {
 }
 
 export default Detail;
-
-// import { useStoreContext } from '../utils/GlobalState';
-// import {
-//   REMOVE_FROM_CART,
-//   UPDATE_CART_QUANTITY,
-//   ADD_TO_CART,
-//   UPDATE_PRODUCTS,
-// } from '../app/actions/action-types/actions';
-
-// const mapStateToProps = state => {
-//   return {
-//     products: state.products,
-//     cart: state.cart
-//   }
-// }
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     removeFromCart: (id) => { dispatch({ type: REMOVE_FROM_CART, _id: id }) },
-//     updateCartQuantity: (id) => { dispatch({ type: UPDATE_CART_QUANTITY, _id: id, purchaseQuantity: parseInt(id.purchaseQuantity) + 1 }) },
-//     addToCart: (item) => { dispatch({ type: ADD_TO_CART, product: { item, purchaseQuantity: 1 } }) },
-//     updateProducts: (product) => { dispatch({ type: UPDATE_PRODUCTS, products: product }) },
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Detail);
