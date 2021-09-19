@@ -43,9 +43,9 @@ export function idbPromise(storeName, method, object) {
 
       switch (method) {
         case 'put':
-          //console.log('in helper, store name: ', store, object);
           store.put(object);
           resolve(object);
+          console.log('end of put method', store.name, object);
           break;
         case 'get':
           const all = store.getAll();
