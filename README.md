@@ -46,5 +46,5 @@ Refactoring done by Tony Huang. Follow me on <a href="">GitHub</a>.
 <img src='./assets/images/MainPage_ReduxProvider.jpg' alt='Main landing page showing component breakdown' />
 Main landing page, with Redux as main provider
 
-<img src='./assets/images/ActionsAndReducers.jps' alt='Showing actions being called by on screen actions' />
+<img src='./assets/images/ActionsAndReducers.jpg' alt='Showing actions being called by on screen actions' />
 Actions and reducers being called
