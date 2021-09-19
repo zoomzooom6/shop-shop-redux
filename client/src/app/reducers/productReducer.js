@@ -8,11 +8,18 @@ import {
     UPDATE_CART_QUANTITY,
     CLEAR_CART,
     TOGGLE_CART
-} from './actions';
+} from '../actions/types';
 
-export const reducer = (state, action) => {
+const initialState = {
+    products: [],
+    cart: [],
+    cartOpen: false,
+    categories: [],
+    currentCategory: ''
+}
+
+export default (state = initialState, action) => {
     switch (action.type) {
-        // if action type value is the value of `UPDATE_PRODUCTS`, return a new state object with an updated products array
         case UPDATE_PRODUCTS:
             return {
                 ...state,
@@ -73,6 +80,6 @@ export const reducer = (state, action) => {
                 cartOpen: !state.cartOpen
             };
         default:
-            return state;
+            return state
     }
-};
+}

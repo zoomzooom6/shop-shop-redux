@@ -5,20 +5,23 @@ import ProductItem from '../ProductItem';
 import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
 //import { useStoreContext } from '../../utils/GlobalState';
-import { UPDATE_PRODUCTS } from '../../app/actions';
+//import { UPDATE_PRODUCTS } from '../../app/actions/action-types/actions';
+import { updateProducts } from '../../app/actions/actions';
 import { idbPromise } from '../../utils/helpers';
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
+//import { connect } from 'react-redux'
 
-function ProductList() {
+const ProductList = () => {
   //const [state, dispatch] = useStoreContext();
-
-  const { currentCategory, products } = this.props;
+  const dispatch = useDispatch();
+  const { currentCategory, products } = useSelector(this.state);
+  //const { products } = products;
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   useEffect(() => {
     if (data) {
-      this.props.updateProducts(data.products);
+      dispatch(updateProducts(data.products));
 
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
@@ -27,10 +30,10 @@ function ProductList() {
       // since we're offline, get all of the data from the `products` store
       idbPromise('products', 'get').then((products) => {
         // use retrieved data to set global state for offline browsing
-        this.props.updateProducts(products);
+        dispatch(updateProducts(products));
       });
     }
-  }, [loading, data]);
+  }, [loading, data, dispatch]);
 
   function filterProducts() {
     if (!currentCategory) {
@@ -64,20 +67,22 @@ function ProductList() {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    products: state.products,
-    categories: state.categories,
-    currentCategory: state.currentCategory,
-    cart: state.cart,
-    cartOpen: state.cartOpen
-  }
-}
+export default ProductList;
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateProducts: (products) => { dispatch({ type: UPDATE_PRODUCTS, products: products }) }
-  }
-}
+// const mapStateToProps = state => {
+//   return {
+//     products: state.products,
+//     categories: state.categories,
+//     currentCategory: state.currentCategory,
+//     cart: state.cart,
+//     cartOpen: state.cartOpen
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     updateProducts: (products) => { dispatch({ type: UPDATE_PRODUCTS, products: products }) }
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

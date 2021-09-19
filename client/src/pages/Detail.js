@@ -4,32 +4,30 @@ import { useQuery } from '@apollo/client';
 
 import { QUERY_PRODUCTS } from '../utils/queries';
 import spinner from '../assets/spinner.gif';
-//import { useStoreContext } from '../utils/GlobalState';
-import {
-  REMOVE_FROM_CART,
-  UPDATE_CART_QUANTITY,
-  ADD_TO_CART,
-  UPDATE_PRODUCTS,
-} from '../app/actions';
+import { addCart, removeCart, updateCartQuantity, updateProducts } from '../app/actions/actions';
 import { idbPromise } from '../utils/helpers';
 import Cart from '../components/Cart';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+//import { connect } from 'react-redux';
 
-function Detail() {
+const Detail = () => {
   //const [state, dispatch] = useStoreContext();
+
   const { id } = useParams();
 
   const [currentProduct, setCurrentProduct] = useState({})
-
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
-  const { products, cart } = this.props;
+  const dispatch = useDispatch();
+  const { products, cart } = useSelector(this.state);
+
+  //const { products, cart } = this.props;
 
   useEffect(() => {
     if (products.length) {
       setCurrentProduct(products.find(product => product._id === id));
     } else if (data) {
-      this.props.updateProducts(data.products);
+      dispatch(updateProducts(data.products));
 
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
@@ -38,16 +36,16 @@ function Detail() {
     // get cache from idb 
     else if (!loading) {
       idbPromise('products', 'get').then((indexedProducts) => {
-        this.props.updateProducts(indexedProducts);
+        dispatch(updateProducts(indexedProducts));
       });
     }
-  }, [products, data, loading, id]);
+  }, [products, data, loading, dispatch, id]);
 
   const addToCart = () => {
     const itemInCart = cart.find((cartItem) => cartItem._id === id)
 
     if (itemInCart) {
-      this.props.updateCartQuantity(id);
+      dispatch(updateCartQuantity(id));
       //purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1;
       // if we're updating quantity, use existing item data and increment purchaseQuantity value by one
       idbPromise('cart', 'put', {
@@ -55,14 +53,14 @@ function Detail() {
         purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
       });
     } else {
-      this.props.addToCart(...currentProduct);
+      dispatch(addCart(...currentProduct));
       // if product isn't in the cart yet, add it to the current shopping cart in IndexedDB
       idbPromise('cart', 'put', { ...currentProduct, purchaseQuantity: 1 });
     }
   }
 
   const removeFromCart = () => {
-    this.props.removeFromCart(currentProduct.id);
+    dispatch(removeCart(currentProduct.id));
 
     // upon removal from cart, delete the item from IndexedDB using the `currentProduct._id` to locate what to remove
     idbPromise('cart', 'delete', { ...currentProduct });
@@ -100,19 +98,30 @@ function Detail() {
     </>
   );
 }
-const mapStateToProps = (state) => {
-  return {
-    products: state.products,
-    cart: state.cart
-  }
-}
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removeFromCart: (id) => { dispatch({ type: REMOVE_FROM_CART, _id: id }) },
-    updateCartQuantity: (id) => { dispatch({ type: UPDATE_CART_QUANTITY, _id: id, purchaseQuantity: parseInt(id.purchaseQuantity) + 1 }) },
-    addToCart: (item) => { dispatch({ type: ADD_TO_CART, product: { item, purchaseQuantity: 1 } }) },
-    updateProducts: (product) => { dispatch({ type: UPDATE_PRODUCTS, products: product }) },
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Detail);
+export default Detail;
+
+// import { useStoreContext } from '../utils/GlobalState';
+// import {
+//   REMOVE_FROM_CART,
+//   UPDATE_CART_QUANTITY,
+//   ADD_TO_CART,
+//   UPDATE_PRODUCTS,
+// } from '../app/actions/action-types/actions';
+
+// const mapStateToProps = state => {
+//   return {
+//     products: state.products,
+//     cart: state.cart
+//   }
+// }
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     removeFromCart: (id) => { dispatch({ type: REMOVE_FROM_CART, _id: id }) },
+//     updateCartQuantity: (id) => { dispatch({ type: UPDATE_CART_QUANTITY, _id: id, purchaseQuantity: parseInt(id.purchaseQuantity) + 1 }) },
+//     addToCart: (item) => { dispatch({ type: ADD_TO_CART, product: { item, purchaseQuantity: 1 } }) },
+//     updateProducts: (product) => { dispatch({ type: UPDATE_PRODUCTS, products: product }) },
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Detail);

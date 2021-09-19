@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { pluralize } from "../../utils/helpers"
 //import { useStoreContext } from '../../utils/GlobalState';
-import { ADD_TO_CART, UPDATE_CART_QUANTITY } from '../../app/actions';
+//import { ADD_TO_CART, UPDATE_CART_QUANTITY } from '../../app/actions/action-types/actions';
+import { addCart, updateCartQuantity } from "../../app/actions/actions";
 import { idbPromise } from '../../utils/helpers';
-import { connect } from 'react-redux'
+//import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 
 function ProductItem(item) {
   const {
@@ -16,19 +18,19 @@ function ProductItem(item) {
   } = item;
 
   //const [state, dispatch] = useStoreContext();
-
-  const { cart } = this.props.cart;
+  const dispatch = useDispatch();
+  const { cart } = useSelector(this.props);
 
   const addToCart = () => {
     const itemInCart = cart.find((cartItem) => cartItem._id === _id)
     if (itemInCart) {
-      this.props.updateCartQuantity(_id, itemInCart.purchaseQuantity);
+      dispatch(updateCartQuantity(_id, itemInCart.purchaseQuantity));
       idbPromise('cart', 'put', {
         ...itemInCart,
         purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
       });
     } else {
-      this.props.addToCart(item);
+      dispatch(addCart(item));
       idbPromise('cart', 'put', { ...item, purchaseQuantity: 1 });
     }
   }
@@ -51,17 +53,19 @@ function ProductItem(item) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    cart: state.cart
-  }
-}
+export default ProductItem;
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addToCart: (item) => { dispatch({ type: ADD_TO_CART, product: { ...item, purchaseQuantity: 1 } }) },
-    updateCartQuantity: (id, quantity) => { dispatch({ type: UPDATE_CART_QUANTITY, _id: id, purchaseQuantity: parseInt(quantity) + 1 }) }
-  }
-}
+// const mapStateToProps = state => {
+//   return {
+//     cart: state.cart
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductItem);
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     addToCart: (item) => { dispatch({ type: ADD_TO_CART, product: { ...item, purchaseQuantity: 1 } }) },
+//     updateCartQuantity: (id, quantity) => { dispatch({ type: UPDATE_CART_QUANTITY, _id: id, purchaseQuantity: parseInt(quantity) + 1 }) }
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(ProductItem);
