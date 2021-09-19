@@ -4,30 +4,19 @@ import { useQuery } from '@apollo/client';
 import ProductItem from '../ProductItem';
 import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
-//import { useStoreContext } from '../../utils/GlobalState';
-//import { UPDATE_PRODUCTS } from '../../app/actions/action-types/actions';
 import { updateProducts } from '../../app/actions/actions';
 import { idbPromise } from '../../utils/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-//import { connect } from 'react-redux'
 
 const ProductList = () => {
-  //const [state, dispatch] = useStoreContext();
   const dispatch = useDispatch();
   const { currentCategory, products } = useSelector((state) => state);
-  //console.log(currentCategory);
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
-  console.log(data);
 
   useEffect(() => {
     if (data) {
-      console.log('in useEffect hook');
-      console.log(data.products)
       dispatch(updateProducts(data.products));
-      console.log('after dispatch');
-      //console.log(state.getState())
-
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
       });
@@ -73,21 +62,3 @@ const ProductList = () => {
 }
 
 export default ProductList;
-
-// const mapStateToProps = state => {
-//   return {
-//     products: state.products,
-//     categories: state.categories,
-//     currentCategory: state.currentCategory,
-//     cart: state.cart,
-//     cartOpen: state.cartOpen
-//   }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     updateProducts: (products) => { dispatch({ type: UPDATE_PRODUCTS, products: products }) }
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

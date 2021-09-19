@@ -21,6 +21,7 @@ const initialState = {
 const reducers = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_PRODUCTS:
+            console.log(action);
             return {
                 ...state,
                 products: [...action.products || []]
@@ -32,20 +33,23 @@ const reducers = (state = initialState, action) => {
                 categories: [...action.categories || []]
             };
         case UPDATE_CURRENT_CATEGORY:
+            console.log(action);
             return {
                 ...state,
                 currentCategory: action.currentCategory
             };
         case ADD_TO_CART:
+            console.log(action);
             return {
                 ...state,
                 cartOpen: true,
-                cart: [...state.cart, action.product]
+                cart: [...state.cart, action.item]
             };
         case ADD_MULTIPLE_TO_CART:
+            console.log(action);
             return {
                 ...state,
-                cart: [...state.cart, ...action.products || []],
+                cart: [...state.cart, ...action.items || []],
             };
         case REMOVE_FROM_CART:
             let newState = state.cart.filter(product => {

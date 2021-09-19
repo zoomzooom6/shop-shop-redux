@@ -4,15 +4,12 @@ import { useQuery } from '@apollo/client';
 import { QUERY_CATEGORIES } from '../../utils/queries';
 import { idbPromise } from '../../utils/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-//import { connect } from 'react-redux'
 
 const CategoryMenu = () => {
-  //const [state, dispatch] = useStoreContext();
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state);
 
   const { loading, data: categoryData } = useQuery(QUERY_CATEGORIES);
-  //console.log(categoryData);
 
   useEffect(() => {
     // if categoryData exists or has changed from the response of useQuery, then run dispatch()
@@ -52,18 +49,3 @@ const CategoryMenu = () => {
 }
 
 export default CategoryMenu;
-
-// const mapStateToProps = state => {
-//   return {
-//     categories: state.categories
-//   }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     updateCategory: (categories) => { dispatch({ type: UPDATE_CATEGORIES, categories: categories }) },
-//     updateCurrentCategory: (id) => { dispatch({ type: UPDATE_CURRENT_CATEGORY, currentCategory: id }) }
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(CategoryMenu);

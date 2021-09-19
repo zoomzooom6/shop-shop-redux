@@ -14,24 +14,24 @@ export const updateProducts = (products) => {
     return {type: UPDATE_PRODUCTS, products}
 }
 
-export const updateCategories = () => {
-    return {type: UPDATE_CATEGORIES}
+export const updateCategories = (categories) => {
+    return {type: UPDATE_CATEGORIES, categories}
 }
 
-export const updateCurrentCategory = () => {
-    return {type: UPDATE_CURRENT_CATEGORY}
+export const updateCurrentCategory = (category) => {
+    return {type: UPDATE_CURRENT_CATEGORY, category}
 }
 
-export const addCart = () => {
-    return {type: ADD_TO_CART}
+export const addCart = (item) => {
+    return {type: ADD_TO_CART, item}
 }
 
-export const addMultipleToCart = () => {
-    return {type: ADD_MULTIPLE_TO_CART}
+export const addMultipleToCart = (items) => {
+    return {type: ADD_MULTIPLE_TO_CART, items}
 }
 
-export const removeCart = () => {
-    return {type: REMOVE_FROM_CART}
+export const removeCart = (item) => {
+    return {type: REMOVE_FROM_CART, item}
 }
 
 export const updateCartQuantity = () => {

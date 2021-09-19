@@ -2,20 +2,16 @@ import React, { useEffect } from "react";
 import CartItem from '../CartItem';
 import Auth from '../../utils/auth';
 import './style.css';
-//import { useStoreContext } from '../../utils/GlobalState';
-//import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from "../../app/actions/action-types/actions";
 import { toggledCart, addMultipleToCart } from "../../app/actions/actions";
 import { idbPromise } from "../../utils/helpers";
 import { QUERY_CHECKOUT } from '../../utils/queries';
 import { loadStripe } from '@stripe/stripe-js';
 import { useLazyQuery } from '@apollo/client';
 import { useSelector, useDispatch } from 'react-redux';
-//import { connect } from 'react-redux'
 
 const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 
 const Cart = () => {
-    //const [state, dispatch] = useStoreContext();
     const dispatch = useDispatch();
     const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
     const { cart, cartOpen } = useSelector((state) => state);
@@ -23,6 +19,8 @@ const Cart = () => {
     useEffect(() => {
         async function getCart() {
             const cart = await idbPromise('cart', 'get');
+            console.log('in useEffect in Cart');
+            console.log(cart);
             dispatch(addMultipleToCart(cart));
         };
 
@@ -109,19 +107,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
-// const mapStateToProps = state => {
-//     return {
-//         cart: state.cart,
-//         cartOpen: state.cartOpen
-//     }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         toggle_cart: () => { dispatch({ type: TOGGLE_CART }) },
-//         add_multiple_to_cart: (cart) => { dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] }) }
-//     }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Cart);
