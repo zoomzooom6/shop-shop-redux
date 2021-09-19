@@ -19,7 +19,8 @@ const Detail = () => {
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   const dispatch = useDispatch();
-  const { products, cart } = useSelector(this.state);
+  const { products } = useSelector(state => state.products);
+  const { cart } = useSelector(state => state.cart);
 
   //const { products, cart } = this.props;
 

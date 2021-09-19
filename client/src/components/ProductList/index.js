@@ -14,8 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 const ProductList = () => {
   //const [state, dispatch] = useStoreContext();
   const dispatch = useDispatch();
-  const { currentCategory, products } = useSelector(this.state);
-  //const { products } = products;
+  const { currentCategory, products } = useSelector((state) => state);
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 

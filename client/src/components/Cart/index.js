@@ -18,7 +18,7 @@ const Cart = () => {
     //const [state, dispatch] = useStoreContext();
     const dispatch = useDispatch();
     const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
-    const { cart, cartOpen } = useSelector(this.state);
+    const { cart, cartOpen } = useSelector((state) => state);
 
     useEffect(() => {
         async function getCart() {
