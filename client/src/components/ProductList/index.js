@@ -5,24 +5,20 @@ import ProductItem from '../ProductItem';
 import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
 //import { useStoreContext } from '../../utils/GlobalState';
-import { UPDATE_PRODUCTS } from '../../utils/actions';
+import { UPDATE_PRODUCTS } from '../../app/actions';
 import { idbPromise } from '../../utils/helpers';
 import { connect } from 'react-redux'
 
 function ProductList() {
   //const [state, dispatch] = useStoreContext();
 
-  const { currentCategory } = currentCategory;
-  const { products } = products;
+  const { currentCategory, products } = this.props;
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   useEffect(() => {
     if (data) {
-      dispatch({
-        type: UPDATE_PRODUCTS,
-        products: data.products
-      });
+      this.props.updateProducts(data.products);
 
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
@@ -31,13 +27,10 @@ function ProductList() {
       // since we're offline, get all of the data from the `products` store
       idbPromise('products', 'get').then((products) => {
         // use retrieved data to set global state for offline browsing
-        dispatch({
-          type: UPDATE_PRODUCTS,
-          products: products
-        });
+        this.props.updateProducts(products);
       });
     }
-  }, [loading, data, dispatch]);
+  }, [loading, data]);
 
   function filterProducts() {
     if (!currentCategory) {
@@ -71,12 +64,20 @@ function ProductList() {
   );
 }
 
-const mapStateToProps = state => ({
-  products: state.products,
-  categories: state.categories,
-  currentCategory: state.currentCategory,
-  cart: state.cart,
-  cartOpen: state.cartOpen
-})
+const mapStateToProps = (state) => {
+  return {
+    products: state.products,
+    categories: state.categories,
+    currentCategory: state.currentCategory,
+    cart: state.cart,
+    cartOpen: state.cartOpen
+  }
+}
 
-export default connect(mapStateToProps)(ProductList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateProducts: (products) => { dispatch({ type: UPDATE_PRODUCTS, products: products }) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

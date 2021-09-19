@@ -3,7 +3,7 @@ import CartItem from '../CartItem';
 import Auth from '../../utils/auth';
 import './style.css';
 //import { useStoreContext } from '../../utils/GlobalState';
-import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from "../../utils/actions";
+import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from "../../app/actions";
 import { idbPromise } from "../../utils/helpers";
 import { QUERY_CHECKOUT } from '../../utils/queries';
 import { loadStripe } from '@stripe/stripe-js';
@@ -15,19 +15,19 @@ const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 const Cart = () => {
     //const [state, dispatch] = useStoreContext();
     const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
-    const { cart } = cart;
-    const { cartOpen } = cartOpen;
+    const { cart } = this.props.cart;
+    const { cartOpen } = this.props.cartOpen;
 
     useEffect(() => {
         async function getCart() {
             const cart = await idbPromise('cart', 'get');
-            dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
+            this.props.add_multiple_to_cart(cart);
         };
 
         if (!cart.length) {
             getCart();
         }
-    }, [cart.length, dispatch]);
+    }, [cart.length]);
 
     useEffect(() => {
         if (data) {
@@ -38,7 +38,7 @@ const Cart = () => {
     }, [data]);
 
     function toggleCart() {
-        dispatch({ type: TOGGLE_CART });
+        this.props.toggleCart();
     }
 
     function calculateTotal() {
@@ -106,9 +106,18 @@ const Cart = () => {
     );
 };
 
-const mapStateToProps = state => ({
-    cart: state.cart,
-    cartOpen: state.cartOpen
-})
+const mapStateToProps = (state) => {
+    return {
+        cart: state.cart,
+        cartOpen: state.cartOpen
+    }
+}
 
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        toggle_cart: () => { dispatch({ type: TOGGLE_CART }) },
+        add_multiple_to_cart: (cart) => { dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] }) }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

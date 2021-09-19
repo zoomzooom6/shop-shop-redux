@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { UPDATE_CATEGORIES, UPDATE_CURRENT_CATEGORY } from '../../utils/actions';
+import { UPDATE_CATEGORIES, UPDATE_CURRENT_CATEGORY } from '../../app/actions';
 import { useQuery } from '@apollo/client';
 import { QUERY_CATEGORIES } from '../../utils/queries';
 //import { useStoreContext } from "../../utils/GlobalState";
@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 function CategoryMenu() {
   //const [state, dispatch] = useStoreContext();
 
-  const { categories } = categories;
+  const { categories } = this.props.categories;
 
   const { loading, data: categoryData } = useQuery(QUERY_CATEGORIES);
 
@@ -17,29 +17,20 @@ function CategoryMenu() {
     // if categoryData exists or has changed from the response of useQuery, then run dispatch()
     if (categoryData) {
       // execute our dispatch function with our action object indicating the type of action and the data to set our state for categories to
-      dispatch({
-        type: UPDATE_CATEGORIES,
-        categories: categoryData.categories
-      });
+      this.props.updateCategory(categoryData.categories);
 
       categoryData.categories.forEach(category => {
         idbPromise('categories', 'put', category);
       });
     } else if (!loading) {
       idbPromise('categories', 'get').then(categories => {
-        dispatch({
-          type: UPDATE_CATEGORIES,
-          categories: categories
-        });
+        this.props.updateCategory(categories);
       });
     }
-  }, [categoryData, loading, dispatch]);
+  }, [categoryData, loading]);
 
   const handleClick = id => {
-    dispatch({
-      type: UPDATE_CURRENT_CATEGORY,
-      currentCategory: id
-    });
+    this.props.updateCurrentCategory(id);
   };
 
   return (
@@ -59,8 +50,17 @@ function CategoryMenu() {
   );
 }
 
-const mapStateToProps = state => ({
-  categories: state.categories
-})
+const mapStateToProps = (state) => {
+  return {
+    categories: state.categories
+  }
+}
 
-export default connect(mapStateToProps)(CategoryMenu);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCategory: (categories) => { dispatch({ type: UPDATE_CATEGORIES, categories: categories }) },
+    updateCurrentCategory: (id) => { dispatch({ type: UPDATE_CURRENT_CATEGORY, currentCategory: id }) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryMenu);
